@@ -13,26 +13,24 @@ def valid?
 end
 
 def execute_transaction
-  @initial_amount = @amount
-  rejection = "Transaction rejected. Please check your account balance."
-  if @sender.balance > @amount
-    @sender.balance= @sender.balance - @amount
-    @receiver.balance= @receiver.balance  @amount
-    @amount = 0
-    @status = "complete"
-  else
-    @status = "rejected"
-    rejection
-  end
-end
+  if valid? && status == "pending" && sender.balance >= amount
+        sender.balance -= amount
+        receiver.balance = amount
+        @status = "complete"
+        return_status = status
+      else
+        @status = "rejected"
+        return_status = "Transaction rejected. Please check your account balance."
+      end
+      return_status
+    end
 
-def reverse_transfer
-  if @status == "complete"
-  @sender.balance = @sender.balance  @initial_amount
-  @receiver.balance = @receiver.balance - @initial_amount
-  @status = "reversed"
-end
-end
+    def reverse_transfer
+      if valid? && status == "complete" && receiver.balance >= amount
+        receiver.balance -= amount
+        sender.balance = amount
+        @status = "reversed"
+      end
+    end
 
-
-end
+   end
