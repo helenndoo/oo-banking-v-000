@@ -1,33 +1,26 @@
 class BankAccount
-  attr_accessor :name, :balance, :status
+  attr_accessor :balance, :status
+  attr_reader :name
 
   def initialize(name)
-    @name = name.freeze
+    @name = name
     @balance = 1000
     @status = "open"
   end
 
-  def name=(name)
-    raise NoMethodError if @name != name
-  end
-
   def deposit(amount)
-    self.balance = self.balance  amount
-  end
+      @balance = @balance + amount
+    end
 
   def display_balance
-    "Your balance is $#{self.balance}."
+    "Your balance is $#{balance}."
   end
 
   def valid?
-    if self.balance > 0 && self.status == "open"
-      true
-    else false
-    end
+    @status == "open" && @balance> 0
   end
-
   def close_account
-    self.status = "closed"
+    @status = "closed"
   end
 
 end
