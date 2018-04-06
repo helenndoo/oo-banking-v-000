@@ -34,4 +34,4 @@ require 'pry'
       @status = "reversed"
     end
   end
- end
+end
