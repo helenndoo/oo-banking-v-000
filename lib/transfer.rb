@@ -13,24 +13,24 @@ def valid?
 end
 
 def execute_transaction
-  if valid? && status == "pending" && sender.balance >= amount
-        sender.balance -= amount
-        receiver.balance = amount
-        @status = "complete"
-        return_status = status
-      else
-        @status = "rejected"
-        return_status = "Transaction rejected. Please check your account balance."
-      end
-      return_status
-    end
-
-    def reverse_transfer
-      if valid? && status == "complete" && receiver.balance >= amount
-        receiver.balance -= amount
-        sender.balance = amount
-        @status = "reversed"
-      end
-    end
-
-   end
++     if valid? && @status == 'pending'
++        sender.withdrawl(amount)
++        receiver.deposit(amount)
++        # @last_transfer = @amount
++        @status = 'complete'
++
++     else
++         @status = 'rejected'
++        "Transaction rejected. Please check your account balance."
++     end
++   end
++
++   def reverse_transfer
++      if @status == 'complete'
++        sender.deposit(amount)
++        receiver.withdrawl(amount)
++        @status = 'reversed'
++      end
++  end
++
+end
